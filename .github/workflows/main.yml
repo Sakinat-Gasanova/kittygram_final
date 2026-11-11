@@ -53,3 +53,14 @@ jobs:
           context: ./nginx
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/kittygram_gateway:latest
+  send_message:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message to Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Проект Kittygram успешно собран и загружен на Docker Hub!
